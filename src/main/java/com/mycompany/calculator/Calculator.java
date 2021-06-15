@@ -1,6 +1,4 @@
-/*
- * 
- */
+
 package com.mycompany.calculator;
 
 import java.awt.Container;
