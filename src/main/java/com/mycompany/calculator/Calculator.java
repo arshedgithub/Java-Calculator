@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * 
  */
 package com.mycompany.calculator;
 
@@ -16,20 +14,20 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
- *
  * @author Arshed
  */
 public class Calculator extends JFrame {
     
-    JTextField display;
+    JTextField display;   
     JButton[] numBtns = new JButton[10];
     JButton decBtn,clBtn,ceBtn,backBtn,addBtn,subBtn,mulBtn,divBtn,eqBtn,conBtn;
     //    JButton[] funcBtns = { decBtn,clBtn,ceBtn,backBtn,addBtn,subBtn,mulBtn,divBtn,eqBtn,conBtn}
     JButton[] funcBtns = new JButton[10];
     JPanel panel;
-    String firstOperand,secondOperand;
+    double firstOperand,secondOperand,result;
+    char operator;
     
-    Font displayFont = new Font("serif",Font.BOLD,30);
+    Font displayFont = new Font("serif",Font.PLAIN,30);
     Font btnFont = new Font("serif",Font.BOLD,25);
     
     Calculator(){
@@ -55,7 +53,7 @@ public class Calculator extends JFrame {
         backBtn = new JButton("\u2190");
         subBtn = new JButton("-");
         addBtn = new JButton("+");
-        mulBtn = new JButton("*");
+        mulBtn = new JButton("x");
         divBtn = new JButton("/");
         eqBtn = new JButton("=");
         decBtn = new JButton(".");
@@ -73,18 +71,22 @@ public class Calculator extends JFrame {
         funcBtns[9] = conBtn;
         
         for (int i = 0; i < 10; i++) {
-            funcBtns[i].setFont(btnFont);
-            numBtns[i].setFocusable(false);
-//            numBtns[i].addActionListener((ActionListener) this);
-        }
-        
-        for (int i = 0; i < 10; i++) {
             numBtns[i] = new JButton(String.valueOf(i));
             numBtns[i].setFont(btnFont);
             numBtns[i].setFocusable(false);
-//            numBtns[i].addActionListener((ActionListener) this);
+            numBtns[i].addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {getInput(e);};
+            });
         }
-
+        
+        for (int i = 0; i < 10; i++) {
+            funcBtns[i].setFont(btnFont);
+            funcBtns[i].setFocusable(false);
+            funcBtns[i].addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {getInput(e);};
+            });
+        };
+        
         con.add(display);
         con.add(panel);
         panel.add(conBtn);
@@ -107,12 +109,86 @@ public class Calculator extends JFrame {
         panel.add(decBtn);
         panel.add(eqBtn);
         panel.add(addBtn);
-        
-//        b1.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//            }
-//        });
+
     }
     
-    
+    public void getInput(ActionEvent e){
+        char dec = '.';
+        
+        for (int i = 0; i < 10; i++) {
+            if (e.getSource() == numBtns[i]) {
+                display.setText(display.getText().concat(String.valueOf(i)));
+            }
+        }
+        
+        if ( e.getSource() == decBtn && !display.getText().contains(String.valueOf(dec))) {
+                display.setText(display.getText().concat("."));
+                if (display.getText().charAt(0) == '.') display.setText("0" + display.getText());
+        }
+        
+        if (e.getSource() == addBtn) {
+            firstOperand = Double.parseDouble(display.getText());
+            operator = '+';
+            display.setText("");
+        }
+        
+        if (e.getSource() == subBtn) {
+            firstOperand = Double.parseDouble(display.getText()); 
+            operator = '-';
+            display.setText("");
+        }
+        
+        if (e.getSource() == mulBtn) {
+            firstOperand = Double.parseDouble(display.getText());
+            operator = '*';
+            display.setText("");
+        }
+        
+        if (e.getSource() == divBtn) {
+            firstOperand = Double.parseDouble(display.getText());
+            operator = '/';
+            display.setText("");
+        }
+        
+        if (e.getSource() == eqBtn) {
+            secondOperand = Double.parseDouble(display.getText());
+            switch(operator){
+                case'+':
+                    result=firstOperand+secondOperand;
+                    break;
+                case'-':
+                    result=firstOperand-secondOperand;
+                    break;
+                case'*':
+                    result=firstOperand*secondOperand;
+                    break;
+                case'/':
+                    result=firstOperand/secondOperand;
+                    break;
+            }
+            display.setText(String.valueOf(result));
+            firstOperand = result;
+        }
+        
+        if (e.getSource() == clBtn) {
+            display.setText("");
+        }
+        
+        if (e.getSource() == ceBtn) {
+            display.setText("");
+            firstOperand=0;
+            secondOperand=0;
+            operator=' ';
+        }
+        
+        if (e.getSource() == backBtn) {
+            display.setText(display.getText().substring(0,display.getText().length()-1));
+        } 
+        
+        if (e.getSource() == conBtn){
+            display.setText(String.valueOf(Double.parseDouble(display.getText())*(-1)));
+        }
+        
+    }
+        
 }
