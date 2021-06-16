@@ -1,15 +1,18 @@
 
 package com.mycompany.calculator;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 
 /**
  * @author Arshed
@@ -37,10 +40,13 @@ public class Calculator extends JFrame {
         Container con = getContentPane();
         con.setLayout(null);
         
+        Border border = BorderFactory.createLineBorder(Color.BLACK);
         display = new JTextField();
         display.setBounds(25, 20, 360, 80);
         display.setFont(displayFont);
+        display.setBorder(border);
         display.setEditable(false);
+        display.setHorizontalAlignment(JTextField.RIGHT);
         
         panel = new JPanel();
         panel.setBounds(25, 120, 360, 300);
